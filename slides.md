@@ -132,94 +132,124 @@ image: assets/img/vscode-on-watch.jpg
 </style>
 
 ---
-
-# L0 - 优劣
+layout: two-cols
+---
+# L0
 
 <br>
 
 编辑：contenteditable
-<br>
+<br />
 操作：document.execCommand
 
-<br>
 
-优势：
-1. 技术门槛低。只要使用了以上两个 API ，就可以让网页具备编辑能力。
+<br>
+<div class="mt-20"></div>
+
+**优势：**
+1. 技术门槛低。
 2. 基于浏览器原生编辑能力，输入非常流畅。
 3. 没有令人头疼的组合输入问题。
 
-劣势：
+<template v-slot:right>
+
+<br/>
+
+```html {2}
+<!-- HTML -->
+<div contenteditable>
+  I am an editor now!
+</div>
+```
+
+<br/>
+
+```javascript
+// JavaScript
+document.execCommand('copy')
+```
+
+<br/>
+<div class="mt-10"></div>
+
+**劣势：**
 1. 相同操作在不同浏览器上会有不同实现。
+2. 输出富文本内容是 HTML ，不利于管理数据。
+3. 扩展复杂的富文本很困难。
+4. 没有办法实现协同编辑。
+
+</template>
+
+<style>
+  ol {
+    list-style: number;
+  }
+</style>
 
 
-<!-- L0 阶段的编辑器主要是是依赖了浏览器原生的 contenteditable API 来实现编辑，以 document.execCommand API 来实现多种操作，比如加粗、绑定链接、复制粘贴等等。 -->
+
+<!-- L0 阶段的编辑器主要是是依赖了浏览器原生的 contenteditable API 来实现编辑，以 document.execCommand API 来实现多种操作，比如加粗、绑定链接、复制粘贴等等。
+技术门槛低，只要使用了以上两个 API ，就可以让网页具备编辑能力。 -->
 
 ---
 
-# Diagrams
+<img class="mx-auto my-20 w-80" src="assets/img/bold-markji.png" alt="bold-markji" />
 
-You can create diagrams / graphs from textual descriptions, directly in your Markdown.
+<v-click>
 
-<div class="grid grid-cols-3 gap-10 pt-4 -mb-6">
+```html
+<strong><em>Markji</em></strong>
 
-```mermaid {scale: 0.5}
-sequenceDiagram
-    Alice->John: Hello John, how are you?
-    Note over Alice,John: A typical interaction
+<em><strong>Markji</strong></em>
+
+<strong><em>M</em></strong><strong><em>ark</em></strong><strong><em>ji</em></strong>
+
+<em><strong>Mark</strong></em><em><strong>j</strong></em><em><strong>i</strong></em>
 ```
 
-```mermaid {theme: 'neutral', scale: 0.8}
-graph TD
-B[Text] --> C{Decision}
-C -->|One| D[Result 1]
-C -->|Two| E[Result 2]
-```
-
-```plantuml {scale: 0.7}
-@startuml
-
-package "Some Group" {
-  HTTP - [First Component]
-  [Another Component]
-}
-
-node "Other Groups" {
-  FTP - [Second Component]
-  [First Component] --> FTP
-}
-
-cloud {
-  [Example 1]
-}
+</v-click>
 
 
-database "MySql" {
-  folder "This is my folder" {
-    [Folder 3]
-  }
-  frame "Foo" {
-    [Frame 4]
-  }
-}
+---
+
+# L1
 
 
-[Another Component] --> [Example 1]
-[Example 1] --> [Folder 3]
-[Folder 3] --> [Frame 4]
-
-@enduml
-```
-
+<div class="w-full flex justify-center my-10">
+  <img alt="quill" src="assets/img/quill.png" />
+  <img alt="slate" src="assets/img/slate.png" />
+  <img alt="draftjs" src="assets/img/draftjs.png" />
+  <img alt="prosemirror" src="assets/img/prosemirror.png" />
+  <img alt="lexical" src="assets/img/lexical.png" />
 </div>
 
-[Learn More](https://sli.dev/guide/syntax.html#diagrams)
+<v-click>
 
+**特点：**
+1. 仍然依赖于 contenteditable API 用于内容编辑，但不再依赖 document.execCommand API 来操作内容，改为自己实现。
+2. 有抽象的数据模型来描述富文本编辑器的内容与状态。
+
+</v-click>
+
+<style>
+  img {
+    @apply ml-5;
+    width: 100px;
+    flex: 1;
+    object-fit: contain;
+  }
+
+  ol {
+    list-style: number;
+  }
+</style>
 
 ---
-layout: center
-class: text-center
----
 
-# Learn More
+# 2012 - Quill
 
-[Documentations](https://sli.dev) · [GitHub](https://github.com/slidevjs/slidev) · [Showcases](https://sli.dev/showcases.html)
+<img class="mx-auto" alt="quill" src="assets/img/quill.png" />
+
+<br/>
+
+> Quill 是 API 驱动的富文本编辑器框架，提供开箱即用的编辑器体验。

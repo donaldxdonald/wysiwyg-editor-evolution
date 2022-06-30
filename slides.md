@@ -46,6 +46,10 @@ image: assets/img/vscode-on-watch.jpg
 
 <div class="mt-10 opacity-50">“一次编写，随处运行”</div>
 
+<!--
+众所周知，Web 是目前来说最通用的平台，不管是电脑、手机、游戏机、汽车还是 Kindle ，只要有浏览器就能打开网站。加上 WebAssembly 和 Electron 等技术和工具的支持，在 Web 上执行复杂操作的超级应用（Figma, VS Code）也在陆续登场。面对 “一次编写，随处运行” 的诱惑下，许多传统桌面应用也都在逐步地将阵地拓展到 Web 端，富文本编辑器就是其中之一。
+-->
+
 ---
 
 # 富文本编辑器 = 坑？
@@ -65,6 +69,11 @@ image: assets/img/vscode-on-watch.jpg
 - 协同编辑
 - 。。。
 
+<!--
+在 Web 前端业界内，富文本编辑器是公认的天坑。Web 开发好处是跨平台，但问题也是因为跨平台带来的兼容问题。跨平台只是能在各个平台上跑起来，但是跑起来怎么样就是天坑所在了。
+
+在 Web 开发编辑器首先要处理好 焦点、光标选区、撤回栈、从外部粘贴内容解析等等的坑，然后考虑兼容不同浏览器（Chrome、Firefox、Safari 等）...... 处理好了最基本的英文输入后，以中文使用者为代表的用户来要求支持 IME 组合输入了...... 解决了 IME 输入后，RTL 语言（希伯来语、阿拉伯语）用户来了...... 手机用户来了......   协同编辑用户来了......
+-->
 
 ---
 
@@ -98,43 +107,52 @@ image: assets/img/vscode-on-watch.jpg
 - `Selection` 对象表示用户选择的文本范围或插入符号的当前位置。它代表页面中的文本选区，可能横跨多个元素。文本选区由用户拖拽鼠标经过文字而产生。
 - `Range` 接口表示一个包含节点与文本节点的一部分的文档片段。
 
+<!--
+最最最基础的网页编辑器，肯定离不开 选区 和 光标 两个概念。但其实光标只是一种特殊的选区，因此这里主要介绍一下选区。
+-->
+
 ---
 
 # 编辑器技术阶段一览
 
 | 阶段 | 描述 | 典型产品 |
 | :----| :---- | :---- |
-| L0 | <ul><li> 强依赖浏览器 DOM API ( contenteditable, document.execCommand ) </li><li>视图即数据</li></ul> | UEditor, TinyMCE, CKEditor 1 ~ 4 |
-| L1 | <ul><li> 仍然基于 contenteditable </li><li>抛弃 document.execCommand 操作内容，改为自己实现</li><li>有抽象的数据模型来描述富文本编辑器的内容与状态</li></ul> | 单元格 |
-| L2 | <ul><li> 抛弃 contenteditable ，改为自己实现 </li><li>抛弃 document.execCommand 操作内容，改为自己实现</li><li>自己实现排版引擎</li></ul> | 单元格 |
+| L0 | <ol><li> 强依赖浏览器 DOM API ( contenteditable, document.execCommand ) </li><li>视图即数据</li></ol> | <ol class="list"><li>UEditor</li><li>TinyMCE</li><li>CKEditor 1 ~ 4</li></ol> |
+| L1 | <ol><li> 仍然基于 contenteditable </li><li>抛弃 document.execCommand 操作内容，改为自己实现</li><li>有抽象的数据模型来描述富文本编辑器的内容与状态</li></ol> | <ol class="list"><li>Quill</li><li>Slate</li><li>CKEditor 5</li><li>Draft.js</li><li>ProseMirror</li><li>wangEditor v5</li></ol> |
+| L2 | <ol><li> 抛弃 contenteditable ，改为自己实现 </li><li>抛弃 document.execCommand 操作内容，改为自己实现</li><li>自己实现排版引擎</li></ol> | <ol class="list"><li>Google Docs</li></ol> |
+
+<style>
+  ol {
+    list-style: number;
+  }
+
+  .list {
+    @apply text-sm;
+  }
+</style>
 
 ---
 
-# LaTeX
-
-LaTeX is supported out-of-box powered by [KaTeX](https://katex.org/).
+# L0 - 优劣
 
 <br>
 
-Inline $\sqrt{3x-1}+(1+x)^2$
-
-Block
-$$
-\begin{array}{c}
-
-\nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} &
-= \frac{4\pi}{c}\vec{\mathbf{j}}    \nabla \cdot \vec{\mathbf{E}} & = 4 \pi \rho \\
-
-\nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} & = \vec{\mathbf{0}} \\
-
-\nabla \cdot \vec{\mathbf{B}} & = 0
-
-\end{array}
-$$
+编辑：contenteditable
+<br>
+操作：document.execCommand
 
 <br>
 
-[Learn more](https://sli.dev/guide/syntax#latex)
+优势：
+1. 技术门槛低。只要使用了以上两个 API ，就可以让网页具备编辑能力。
+2. 基于浏览器原生编辑能力，输入非常流畅。
+3. 没有令人头疼的组合输入问题。
+
+劣势：
+1. 相同操作在不同浏览器上会有不同实现。
+
+
+<!-- L0 阶段的编辑器主要是是依赖了浏览器原生的 contenteditable API 来实现编辑，以 document.execCommand API 来实现多种操作，比如加粗、绑定链接、复制粘贴等等。 -->
 
 ---
 

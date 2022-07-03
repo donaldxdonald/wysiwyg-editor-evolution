@@ -4,6 +4,7 @@ layout: quote
 fonts:
   sans: 'Source Han Sans VF'
   mono: 'Recursive'
+lineNumbers: true
 ---
 
 # Web 富文本编辑器演进
@@ -58,6 +59,8 @@ image: assets/img/vscode-on-watch.jpg
 
 <br />
 
+<v-clicks>
+
 - 焦点
 - 光标选区
 - 撤回栈
@@ -68,6 +71,8 @@ image: assets/img/vscode-on-watch.jpg
 - 手机端
 - 协同编辑
 - 。。。
+
+</v-clicks>
 
 <!--
 在 Web 前端业界内，富文本编辑器是公认的天坑。Web 开发好处是跨平台，但问题也是因为跨平台带来的兼容问题。跨平台只是能在各个平台上跑起来，但是跑起来怎么样就是天坑所在了。
@@ -80,6 +85,8 @@ image: assets/img/vscode-on-watch.jpg
 # 落后的生产力与人们日益增长的需求之间的矛盾
 
 <br />
+
+<v-clicks>
 
 **落后生产力：**
 - Web 相关标准推进缓慢
@@ -95,21 +102,7 @@ image: assets/img/vscode-on-watch.jpg
 - 用户对于编辑器的使用要求越来越高，比如：合并单元格、列表多级嵌套、协同编辑、版本对比、段落标注，大家都认为这是基本需求，其实这里面的技术难度是超出大家的想象的。
 
 
----
-
-# 编辑器技术基础知识
-
-<img border="rounded" src="assets/img/selection.png">
-
-<br />
-
-在 Web 开发中，选区的介绍可以分为两个对象，**Selection** 和 **Range** 。
-- `Selection` 对象表示用户选择的文本范围或插入符号的当前位置。它代表页面中的文本选区，可能横跨多个元素。文本选区由用户拖拽鼠标经过文字而产生。
-- `Range` 接口表示一个包含节点与文本节点的一部分的文档片段。
-
-<!--
-最最最基础的网页编辑器，肯定离不开 选区 和 光标 两个概念。但其实光标只是一种特殊的选区，因此这里主要介绍一下选区。
--->
+</v-clicks>
 
 ---
 
@@ -193,7 +186,9 @@ document.execCommand('copy')
 
 ---
 
-<img class="mx-auto my-20 w-80" src="assets/img/bold-markji.png" alt="bold-markji" />
+# L0
+
+<img class="mx-auto my-15 w-80" src="assets/img/bold-markji.png" alt="bold-markji" />
 
 <v-click>
 
@@ -245,11 +240,576 @@ document.execCommand('copy')
 </style>
 
 ---
-
+layout: two-cols
+---
 # 2012 - Quill
 
-<img class="mx-auto" alt="quill" src="assets/img/quill.png" />
+<img class="mx-auto w-3/4 my-15" alt="quill" src="assets/img/quill.png" />
 
 <br/>
 
-> Quill 是 API 驱动的富文本编辑器框架，提供开箱即用的编辑器体验。
+Quill 是 API 驱动的富文本编辑器框架，提供**开箱即用**的编辑器体验。
+
+::right::
+
+<div v-click="1">
+  <img class="w-50 mx-auto my-10 rounded-full" alt="jason" src="assets/img/jasonchen.png" />
+
+  <p align="center">Jason Chen</p>
+</div>
+
+<arrow v-click="2" x1="580" x2="460" y1="180" y2="180" width="1" />
+
+
+<!-- Quill 的作者 Jason Chen 是一名华裔，Quill 其实算是 Jason 的一个 Side Project，当初是创办了一家公司，专门做类似 Google Docs 的协作编辑器，因此自己写了 Quill 出来使用。 -->
+
+---
+layout: two-cols
+---
+
+# 2012 - Quill
+
+## Before:
+
+<br/>
+<br/>
+
+```mermaid {theme: 'neutral', scale: 0.8}
+sequenceDiagram
+    User->>Browser: 输入
+    Browser-->>User: 事件
+```
+
+::right::
+
+<br />
+<br />
+<br />
+
+## After:
+
+<br/>
+<br/>
+
+```mermaid {theme: 'neutral', scale: 0.8}
+sequenceDiagram
+    User->>Quill: 拦截输入
+    Quill->>Browser: 代理输入
+    Browser-->>Quill: 拦截事件
+    Quill-->>User: 代理事件
+```
+<!-- Quill 对 DOM Tree 以及数据的修改操作进行了抽象，从而实际使用时不需要我们对 DOM 操作，而是通过 Quill 的 API 进行操作 -->
+
+---
+layout: two-cols
+---
+
+- 数据 ===> Delta
+- 文档树 ===> Parchment
+- DOM Node ===> Blot
+
+
+::right::
+
+![example](assets/img/example-check-this-out.png)
+
+```json {all|3-8|9-11|12-17|18-20|2|all}
+{
+    "ops": [
+        {
+            "attributes": {
+                "bold": true
+            },
+            "insert": "Check"
+        },
+        {
+            "insert": " "
+        },
+        {
+            "attributes": {
+                "link": "https://www.markji.com/"
+            },
+            "insert": "this"
+        },
+        {
+            "insert": " out ~"
+        }
+    ]
+}
+
+```
+
+<!-- 有了这层抽象后，原本的对 DOM 的直接操作就变成了对 Blot 的操作，这些操作用 Delta 来表示。Quill 在 Delta 中抛弃了 DOM 的节点树的层次，因此完全看不出包裹文字的标签和节点关系，只有一个扁平化后的数组 ops。 -->
+
+---
+
+# 2012 - Quill
+
+扁平化数据结构有利于协同编辑
+
+> 用户案例：石墨文档
+
+
+<br/>
+
+<v-clicks>
+
+Quill 的特点是：
+1. 依赖浏览器原生编辑能力 contentEditable (L1)
+2. 引入了一层抽象的数据结构用以描述内容以及行为
+3. 对协同编辑支持良好
+4. 输出结构可以是字符串也可以是 Delta （JSON），但 Delta 作为数据模型可读性不高
+
+</v-clicks>
+
+
+<style>
+  ol {
+    list-style: number;
+  }
+</style>
+
+<!-- Delta 的扁平化结构其实是协同编辑中的 OT 模型的一种实现，因此 Quill 也是生来就是为了协同编辑而设计的。扁平化带来的好处是对性能提升有帮助，弊端则是在表示一些复杂的嵌套内容时会比较吃力。 -->
+
+---
+
+# 2015 - ProseMirror
+
+<div class="my-20 flex items-center justify-between">
+  <div class="flex flex-col items-center">
+    <img class="w-50 rounded-1/2 mb-5" alt="marijn" src="assets/img/marijn.png" />
+    <span>Marijn Haverbeke</span>
+  </div>
+
+
+  <ul class="inline-flex flex-col">
+    <li>CodeMirror</li>
+    <li>acorn</li>
+  </ul>
+
+  <img class="w-70" alt="prosemirror" src="assets/img/prosemirror.png" />
+
+</div>
+
+<arrow x1="270" y1="260" x2="370" y2="260" width="1" />
+
+<arrow x1="520" y1="260" x2="620" y2="260" width="1" />
+
+<!-- Marijn 是 CodeMirror 编辑器和 acorn 解析器的作者，前者已经在 Chrome 和 Firefox 自带的调试工具里使用了，后者则是 babel 的依赖。为了有更多的收入，Marijn 开始了新的项目，ProseMirror 。
+
+Marijn 觉得当时市面上的开源编辑器都没有一个采用他认为是理想的方法，且很多还是使用着旧的范式来设计，使用着 contentEditable来实现。这样子开发者对文档内容能控制的范围就很小，而这又是很容易被用户和浏览器修改的。虽然 ProseMirror 还是基于 contentEditable 实现编辑功能了，毕竟自己重新实现一套选区逻辑太麻烦了。 -->
+
+---
+layout: two-cols
+---
+
+# 2015 - ProseMirror
+
+<img class="mx-auto my-10 w-4/5" alt="example" src="assets/img/example-check-this-out.png" />
+
+::right::
+
+```json {all|4-12|6-10,19-27|all}
+{
+    "type": "paragraph",
+    "content": [
+        {
+            "type": "text",
+            "marks": [
+                {
+                    "type": "strong"
+                }
+            ],
+            "text": "Check"
+        },
+        {
+            "type": "text",
+            "text": " "
+        },
+        {
+            "type": "text",
+            "marks": [
+                {
+                    "type": "link",
+                    "attrs": {
+                        "href": "https://www.markji.com",
+                        "title": ""
+                    }
+                }
+            ],
+            "text": "this"
+        },
+        {
+            "type": "text",
+            "text": " out ~"
+        }
+    ]
+}
+```
+
+<style>
+  pre {
+    font-size: 0.5em !important;
+    line-height: 1.5 !important;
+  }
+</style>
+
+---
+
+# 2015 - ProseMirror
+
+
+> 用户案例：Confluence, flomo
+
+<br/>
+
+<v-clicks>
+
+**ProseMirror 的特点是：**
+1. 依赖浏览器原生编辑能力 contentEditable (L1)
+2. 更抽象的 JSON 文档模型。ProseMirror 只定义了可配置的模型框架，具体的结构可以在实际开发的时候自定义。
+3. 嵌套的树形结构。能支持复杂结构的内容。
+4. 对协同编辑的良好支持。从诞生之初，ProseMirror 就开始关注着协同编辑的支持。
+5. 1.0 后加入了不可变数据，使得编辑器的数据处理有了一个完整的数据流，稳定且可控。
+
+</v-clicks>
+
+<style>
+  ol {
+    list-style: number;
+  }
+</style>
+
+
+---
+
+# 2016.02 - Draft.js
+
+<div class="mx-15 my-20 flex justify-between items-center text-3xl">
+  <span>React</span>
+  <span>+</span>
+  <span>EditorState</span>
+  <span>=</span>
+  <img class="w-60" alt="draftjs" src="assets/img/draftjs.png" />
+</div>
+
+- EditorState & ContentState
+- Immutable
+
+<!-- 彼时还叫 Facebook 的 Meta 开源了 Draft.js ，既然都是同一个公司的，Draft.js 就在视图层方面使用了 React 渲染 UI 。这也是第一个 React + 编辑器结合的案例，React 的流行也让使用者可以快速地直接基于 Draft.js 进行二次开发。
+
+Draft.js 不仅外表有 React ，内里也是有很深的 React 的影子，类似 Redux 等状态管理的 EditorState 和 ContentState ，在数据层使用 Immutable等特性。JS 对象的属性是可以随意赋值的，也就是 mutable 可变的。而相对地，不可变的数据类型不允许随意赋值，每次通过 Immutable API 的修改，都会生成一个新的引用。 -->
+
+---
+
+# 2016.02 - Draft.js
+
+> 用户案例：知乎
+
+<br/>
+
+<v-clicks>
+
+**Draft.js 的特点是：**
+1. 依赖浏览器原生编辑能力 contentEditable (L1)
+2. 用 React 来实现视图层
+3. 内容的存储和渲染逻辑分离
+4. 使用 Immutable 数据
+5. 虽然也抽象了基于 JSON 的数据模型，但是对于嵌套数据的支持有些弱
+
+</v-clicks>
+
+
+<style>
+  ol {
+    list-style: number;
+  }
+</style>
+
+---
+layout: image-left
+image: 'assets/img/slate-meme.jpg'
+---
+
+# 2016.06 - Slate
+
+
+**Ian Storm Taylor**
+
+<img class="my-10" alt="slate" src="assets/img/slate.png" />
+
+<v-click>
+
+- Meidum
+- Google Docs
+- Dropbox Paper
+- ...
+
+</v-click>
+
+
+<!-- 此时市面上已有许多编辑器轮子在卷了，但是 Ian Storm Taylor 在开发自己的 CMS 产品时，仍然觉得没有一个好用的编辑器，他觉得这些编辑器如果只是用来做一些简单的产品的话，是挺不错的了，但是如果想要开发像 Medium 、Google Docs 和 Dropbox Paper 这些大型应用的话，就太难太难了，于是就有了 Slate。 -->
+
+---
+
+# 2016.06 - Slate
+
+Slate 同样的是一个编辑器框架，而不是开箱即用的编辑器工具。
+
+<br />
+
+<v-click>
+
+- Immutable (Draft.js)
+- 插件机制 (Draft.js)
+- React 渲染视图 (Draft.js)
+- 嵌套数据结构 (ProseMirror)
+- Schema (ProseMirror)
+
+</v-click>
+
+<!-- Slate 同样的是一个编辑器框架，而不是开箱即用的编辑器工具。作为晚辈的 Slate 集合了前辈们的许多优点，从 Draft.js 那里参考的 Immutable 数据、插件机制和 React 视图层，又从 ProseMirror 借鉴了嵌套数据结构和 Schema 约束规则。整合了许多编辑器框架的核心特性，又加上框架理念先进和作者对架构的追求（时至今日 2022 ，仍然是 beta 的状态，还没到 1.0），Slate 在社区上还是比较受欢迎的。 -->
+
+<style>
+  li {
+    @apply text-xl leading-loose;
+  }
+</style>
+
+<!--
+Slate 同样的是一个编辑器框架，而不是开箱即用的编辑器工具。作为晚辈的 Slate 集合了前辈们的许多优点，从 Draft.js 那里参考的 Immutable 数据、插件机制和 React 视图层，又从 ProseMirror 借鉴了嵌套数据结构和 Schema 约束规则。整合了许多编辑器框架的核心特性，又加上框架理念先进和作者对架构的追求（时至今日 2022 ，仍然是 beta 的状态，还没到 1.0），Slate 在社区上还是比较受欢迎的。
+-->
+
+---
+layout: two-cols
+---
+
+# 2016.06 - Slate
+
+<img class="my-10 w-4/5" alt="slate-example" src="assets/img/example-slate.png" />
+
+::right::
+
+```json
+{
+    "object": "block",
+    "type": "paragraph",
+    "nodes": [
+      {
+        "object": "text",
+        "text": "This is editable "
+      },
+      {
+        "object": "text",
+        "text": "rich",
+        "marks": [{ "type": "bold" }]
+      },
+      {
+        "object": "text",
+        "text": " text, "
+      },
+      {
+        "object": "text",
+        "text": "much",
+        "marks": [{ "type": "italic" }]
+      },
+      {
+        "object": "text",
+        "text": " better than a "
+      },
+      {
+        "object": "text",
+        "text": "<textarea>",
+        "marks": [{ "type": "code" }]
+      },
+      {
+        "object": "text",
+        "text": "!"
+      }
+    ]
+}
+```
+
+<style>
+  pre {
+    @apply text-xs !important;
+  }
+</style>
+
+---
+
+# 2016.06 - Slate
+
+<br/>
+
+<v-clicks>
+
+**此时 Slate 的特点是：**
+1. 依赖浏览器原生编辑能力 contentEditable (L1)
+2. 用 React 来实现视图层
+3. 支持嵌套的 JSON 数据结构
+4. Immutable 数据
+5. 插件机制为核心
+6. 有约束数据的 Schema
+
+</v-clicks>
+
+<style>
+  ol {
+    list-style: number;
+  }
+</style>
+
+---
+
+# 2019 - Slate 0.50+
+
+<v-click>
+<div class="leading-normal mr-10 my-10">
+Slate 在架构上进行了一个大更新，作者称 “整个框架都从头开始重新考虑了”
+</div>
+</v-click>
+
+<v-click>
+
+1. 将底层逻辑抽离出来 Slate Core ，与视图层分离
+2. 用 TypeScript 重写
+3. 简化插件机制，插件不再与渲染逻辑耦合
+4. 用简单的 JSON 对象替换 Immutable.js
+5. 自有概念和一些 Commands 更精简更抽象，改名为 Transforms
+
+</v-click>
+
+<style>
+  ol {
+    list-style: number;
+  }
+</style>
+
+---
+layout: two-cols
+---
+
+# 2019 - Slate 0.50+
+
+<img class="my-10 w-6/7" alt="slate-example" src="assets/img/example-slate.png" />
+
+<v-click>
+
+```json
+{
+    type: 'paragraph',
+    children: [
+      { text: 'This is editable ' },
+      { text: 'rich', bold: true },
+      { text: ' text, ' },
+      { text: 'much', italic: true },
+      { text: ' better than a ' },
+      { text: '<textarea>', code: true },
+      { text: '!' },
+    ],
+}
+```
+
+</v-click>
+
+::right::
+
+<div class="mt-20"></div>
+
+<v-clicks>
+
+> 用户案例：钉钉文档、语雀、飞书
+
+
+**这时候 Slate 的特点是：**
+1. 依赖浏览器原生编辑能力 contentEditable (L1)
+2. 非常简洁的支持嵌套的数据模型
+3. 整体架构采用纯函数 + 接口的方式，思路和代码都非常简洁
+4. 插件机制支持开发强大的功能
+5. 整体的设计理念与 DOM 很像
+
+
+</v-clicks>
+
+
+<style>
+
+  pre {
+    @apply w-6/7;
+  }
+  ol {
+    list-style: number;
+  }
+</style>
+
+---
+
+# 2022 - Lexical
+
+<div class="my-10 flex items-center justify-between">
+  <img class="w-80" alt="draftjs" src="assets/img/draftjs.png" />
+
+  <span class="font-bold"> ==========> </span>
+
+  <img class="w-80" alt="lexical" src="assets/img/lexical.png" />
+</div>
+
+<v-clicks>
+
+**特点：**
+1. 依赖浏览器原生编辑能力 contentEditable (L1)
+2. 保留了 Draft.js 中的一些概念（EditorState）
+3. 不与 React 绑定了，可以用各种框架实现视图层
+4. 整个框架挺轻便的，几乎没有什么其他的依赖
+
+<br/>
+
+> 用户案例：Meta
+
+</v-clicks>
+
+
+<!-- 由于 Draft.js 在以往兼容浏览器方面做了很多的脏活，且这些是现在不太必要的，同时为了改善开发者体验（很多开发者吐槽 Draft.js 不好用），Meta 又开源了一款新的编辑器框架 Lexical ，旨在替换 Draft.js。
+
+目前看来暂时没有什么特别创新的概念，主要也还是吸收了其他编辑器框架的优点： -->
+
+
+<style>
+  ol {
+    list-style: number;
+  }
+</style>
+
+<!--
+由于 Draft.js 在以往兼容浏览器方面做了很多的脏活，且这些是现在不太必要的，同时为了改善开发者体验（很多开发者吐槽 Draft.js 不好用），Meta 又开源了一款新的编辑器框架 Lexical ，旨在替换 Draft.js。
+-->
+
+---
+
+# L2
+
+Google Docs, WPS, 腾讯文档...
+
+<v-clicks>
+
+<img class="mx-auto mb-10" alt="googledocs" src="assets/img/google-docs.png" />
+
+- 光标系统
+- 文本布局系统
+- 字体解析
+- ...
+
+</v-clicks>
+
+<!-- 前面都有说到，凭借浏览器的contenteditable API，可以快速地开发出一款编辑器出来，但是各种兼容问题太多了，别看现在大多数编辑器框架还在 L1 ，其实早在 2010 年，财力雄厚的 Google 就已经开始抛弃浏览器的 contenteditable 了，新版 Google Docs 基于 Canvas 自己研发光标系统、文本布局系统和字体解析，因此除了自己的抽象数据结构外，连编辑操作都是自己实现了，编辑的呈现效果一致了，那协同编辑就自然水到渠成了。
+当然，Google Docs 的核心技术没有开源，这种拼钱的工作还是得牢牢掌握在自己手中，国内的腾讯文档和 WPS 等编辑器也算是 L2 的，不一定是用 Canvas ，但思路都是自己实现编辑布局功能，弃用浏览器的 contenteditable 。 -->
+
+---
+layout: quote
+align: center
+---
+
+# 前路漫漫，任重道远
+
+<!-- contenteditable is terrible, 但是编辑器已经最小化了对它的使用，比之更为严峻的是，操作系统、浏览器、输入法相互组合形成的紊乱生态 —— 一个编辑器无法控制的，但产品又期望在上面开出繁花的生态。所以才说，Web 富文本编辑器是前端的天坑之一。 -->

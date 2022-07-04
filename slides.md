@@ -30,12 +30,12 @@ lineNumbers: true
 <br/>
 富文本 Rich Text ，相对于纯文本 Plain Text 来说，就是有通用的格式选项（比如加粗和斜体）来格式化的文本。
 
-<img class="mt-10" src="assets/img/rich-text.png" />
+<img class="mt-10" src="/assets/img/rich-text.png" />
 
 
 ---
 layout: image-x
-image: assets/img/vscode-on-watch.jpg
+image: /assets/img/vscode-on-watch.jpg
 ---
 
 # Web + 富文本编辑器
@@ -188,7 +188,7 @@ document.execCommand('copy')
 
 # L0
 
-<img class="mx-auto my-15 w-80" src="assets/img/bold-markji.png" alt="bold-markji" />
+<img class="mx-auto my-15 w-80" src="/assets/img/bold-markji.png" alt="bold-markji" />
 
 <v-click>
 
@@ -211,11 +211,11 @@ document.execCommand('copy')
 
 
 <div class="w-full flex justify-center my-10">
-  <img alt="quill" src="assets/img/quill.png" />
-  <img alt="slate" src="assets/img/slate.png" />
-  <img alt="draftjs" src="assets/img/draftjs.png" />
-  <img alt="prosemirror" src="assets/img/prosemirror.png" />
-  <img alt="lexical" src="assets/img/lexical.png" />
+  <img alt="quill" src="/assets/img/quill.png" />
+  <img alt="slate" src="/assets/img/slate.png" />
+  <img alt="draftjs" src="/assets/img/draftjs.png" />
+  <img alt="prosemirror" src="/assets/img/prosemirror.png" />
+  <img alt="lexical" src="/assets/img/lexical.png" />
 </div>
 
 <v-click>
@@ -244,7 +244,7 @@ layout: two-cols
 ---
 # 2012 - Quill
 
-<img class="mx-auto w-3/4 my-15" alt="quill" src="assets/img/quill.png" />
+<img class="mx-auto w-3/4 my-15" alt="quill" src="/assets/img/quill.png" />
 
 <br/>
 
@@ -253,7 +253,7 @@ Quill 是 API 驱动的富文本编辑器框架，提供**开箱即用**的编�
 ::right::
 
 <div v-click="1">
-  <img class="w-50 mx-auto my-10 rounded-full" alt="jason" src="assets/img/jasonchen.png" />
+  <img class="w-50 mx-auto my-10 rounded-full" alt="jason" src="/assets/img/jasonchen.png" />
 
   <p align="center">Jason Chen</p>
 </div>
@@ -311,7 +311,7 @@ layout: two-cols
 
 ::right::
 
-![example](assets/img/example-check-this-out.png)
+![example](/assets/img/example-check-this-out.png)
 
 ```json {all|3-8|9-11|12-17|18-20|2|all}
 {
@@ -377,7 +377,7 @@ Quill 的特点是：
 
 <div class="my-20 flex items-center justify-between">
   <div class="flex flex-col items-center">
-    <img class="w-50 rounded-1/2 mb-5" alt="marijn" src="assets/img/marijn.png" />
+    <img class="w-50 rounded-1/2 mb-5" alt="marijn" src="/assets/img/marijn.png" />
     <span>Marijn Haverbeke</span>
   </div>
 
@@ -387,7 +387,7 @@ Quill 的特点是：
     <li>acorn</li>
   </ul>
 
-  <img class="w-70" alt="prosemirror" src="assets/img/prosemirror.png" />
+  <img class="w-70" alt="prosemirror" src="/assets/img/prosemirror.png" />
 
 </div>
 
@@ -405,7 +405,7 @@ layout: two-cols
 
 # 2015 - ProseMirror
 
-<img class="mx-auto my-10 w-4/5" alt="example" src="assets/img/example-check-this-out.png" />
+<img class="mx-auto my-10 w-4/5" alt="example" src="/assets/img/example-check-this-out.png" />
 
 ::right::
 
@@ -490,7 +490,7 @@ layout: two-cols
   <span>+</span>
   <span>EditorState</span>
   <span>=</span>
-  <img class="w-60" alt="draftjs" src="assets/img/draftjs.png" />
+  <img class="w-60" alt="draftjs" src="/assets/img/draftjs.png" />
 </div>
 
 - EditorState & ContentState
@@ -528,7 +528,7 @@ Draft.js 不仅外表有 React ，内里也是有很深的 React 的影子，类
 
 ---
 layout: image-left
-image: 'assets/img/slate-meme.jpg'
+image: '/assets/img/slate-meme.jpg'
 ---
 
 # 2016.06 - Slate
@@ -536,7 +536,7 @@ image: 'assets/img/slate-meme.jpg'
 
 **Ian Storm Taylor**
 
-<img class="my-10" alt="slate" src="assets/img/slate.png" />
+<img class="my-10" alt="slate" src="/assets/img/slate.png" />
 
 <v-click>
 
@@ -586,7 +586,7 @@ layout: two-cols
 
 # 2016.06 - Slate
 
-<img class="my-10 w-4/5" alt="slate-example" src="assets/img/example-slate.png" />
+<img class="my-10 w-4/5" alt="slate-example" src="/assets/img/example-slate.png" />
 
 ::right::
 
@@ -692,7 +692,7 @@ layout: two-cols
 
 # 2019 - Slate 0.50+
 
-<img class="my-10 w-6/7" alt="slate-example" src="assets/img/example-slate.png" />
+<img class="my-10 w-6/7" alt="slate-example" src="/assets/img/example-slate.png" />
 
 <v-click>
 
@@ -748,11 +748,11 @@ layout: two-cols
 # 2022 - Lexical
 
 <div class="my-10 flex items-center justify-between">
-  <img class="w-80" alt="draftjs" src="assets/img/draftjs.png" />
+  <img class="w-80" alt="draftjs" src="/assets/img/draftjs.png" />
 
   <span class="font-bold"> ==========> </span>
 
-  <img class="w-80" alt="lexical" src="assets/img/lexical.png" />
+  <img class="w-80" alt="lexical" src="/assets/img/lexical.png" />
 </div>
 
 <v-clicks>
@@ -793,7 +793,7 @@ Google Docs, WPS, 腾讯文档...
 
 <v-clicks>
 
-<img class="mx-auto mb-10" alt="googledocs" src="assets/img/google-docs.png" />
+<img class="mx-auto mb-10" alt="googledocs" src="/assets/img/google-docs.png" />
 
 - 光标系统
 - 文本布局系统

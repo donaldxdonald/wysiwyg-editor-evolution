@@ -28,9 +28,14 @@ lineNumbers: true
 # 什么是富文本？
 
 <br/>
+
+<v-click>
+
 富文本 Rich Text ，相对于纯文本 Plain Text 来说，就是有通用的格式选项（比如加粗和斜体）来格式化的文本。
 
 <img class="mt-10" src="/assets/img/rich-text.png" />
+
+</v-click>
 
 
 ---
@@ -303,6 +308,8 @@ sequenceDiagram
 ---
 layout: two-cols
 ---
+
+# 2012 - Quill
 
 - 数据 ===> Delta
 - 文档树 ===> Parchment
